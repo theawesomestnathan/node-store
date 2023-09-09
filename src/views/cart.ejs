@@ -1,0 +1,142 @@
+<html>
+  <head>
+    <title> bria </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+      body {
+        margin: 15px;
+        white-space: nowrap;
+      }
+
+      @import url("https://fonts.googleapis.com/css2?family=Kalam");
+      .navbar-brand {
+        font-family: "Kalam", cursive;
+        font-size: 30px;
+      }
+
+      span {
+        font-family: "Kalam", cursive;
+        display: block;
+        text-align: center;
+      }
+
+      .row {
+        display: flex;
+        align-items: center;
+      }
+
+      .form-select {
+        width: 30%;
+      }
+
+      .form-control {
+        width: 30%;
+        height: 40px;
+      }
+
+      img {
+        border-radius: 10px;
+      }
+
+      .item-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 200px;
+        height: 200px;
+        background-color: grey;
+        border-radius: 10px;
+        padding: 10px;
+        margin: 10px;
+      }
+
+      .item-box img {
+        width: 100%;
+        height: 70%;
+        background-size: cover;
+        background-position: center;
+      }
+      
+      .item-box .product-name {
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+
+  <body data-bs-theme="dark">
+    <nav class="navbar navbar-expand-sm">
+      <h1 class="navbar-brand" href="/"> bria </h1>
+
+      <ul class="navbar-nav ms-auto">
+        <li>
+          <a class="nav-link" href="/"> Home </a>
+        </li>
+        <li>
+          <a class="nav-link" href="/cart"> View Cart </a>
+        </li>
+        <li>
+          <a class="nav-link" href="#"> Contact Us </a>
+        </li>
+      </ul>
+    </nav>
+
+    <br>
+
+    <p> Click on a item to delete it. </p>
+    <p onclick="buy()"> Or, click here to purchase your items. </p>
+
+    <br>
+
+    <% categories.forEach((category) => { %>
+      <div class="row">
+        <h2> <%= category.category %> </h2>
+        <% category.items.forEach((item) => { %>
+          <div class="item-box" onclick="deleteData('<%= item.image %>')">
+            <img src="<%= item.image %>" alt="Product Image">
+            <span class="product-name"> <%= item.name %> </span>
+            <span> ₱<%= item.price %> </span>
+          </div>
+        <% }) %>
+      </div>
+    <% }) %>
+
+    <script>
+      function deleteData(itemImage) {
+        $.ajax({
+          url: '/delete-data',
+          type: 'POST',
+          data: {
+            image: itemImage
+          },
+          success: function(response) {
+            alert(response)
+            document.location.reload()
+          }
+        })
+      }
+
+      function buy() {
+        $.ajax({
+          url: '/buy',
+          type: 'POST',
+          data: {
+
+          },
+          success: function(response) {
+            alert(response)
+            document.location.reload()
+          }
+        })
+      }
+    </script>
+
+  </body>
+
+</html>
